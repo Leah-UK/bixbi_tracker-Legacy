@@ -21,7 +21,7 @@ Using the tracker tag you’re able to punish criminals in a different way than 
 
 - ESX v1 Final, ESX v1.2 or ESX Legacy  
 <i> Can be easily modified for other frameworks</i>
-- bixbi_core
+- <a href='https://github.com/Leah-UK/bixbi_core'>bixbi_core</a>
 - OneSync <b>Legacy</b>
 
 ---
