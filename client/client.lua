@@ -116,15 +116,14 @@ function TrackerItemCheckLoop()
 	Citizen.CreateThread(function()
 		while ESX.PlayerLoaded do
 			if trackedGroup ~= nil then
-				ESX.TriggerServerCallback('bixbi_core:itemCount', function(itemCount) 
-					if itemCount == 0 then
-						TriggerServerEvent('bixbi_tracker:RemoveAtId', trackedGroup.name, GetPlayerServerId(PlayerId()))
-						trackedGroup = nil
-						hasTracker = false
-					else
-						hasTracker = true
-					end
-				end, 'tracker')
+				local itemCount = exports['bixbi_core']:itemCount('tracker')
+				if itemCount == 0 then
+					TriggerServerEvent('bixbi_tracker:RemoveAtId', trackedGroup.name, GetPlayerServerId(PlayerId()))
+					trackedGroup = nil
+					hasTracker = false
+				else
+					hasTracker = true
+				end
 			end
 			Citizen.Wait(Config.ItemCheckTime * 1000)
 		end
