@@ -28,7 +28,7 @@ function StartScript()
 	ESX.PlayerLoaded = true
 
 	TriggerEvent('bixbi_tracker:CheckTags')
-	if (Config.Jobs[ESX.PlayerData.job.name] ~= nil and Config.Jobs[ESX.PlayerData.job.name].autojoin) then
+	if (Config.Jobs[ESX.PlayerData.job.name] ~= nil and Config.Jobs[ESX.PlayerData.job.name].autojoin and exports['bixbi_core']:itemCount('tracker') > 0) then
 		JoinGroup(ESX.PlayerData.playerId)
 	end
 
