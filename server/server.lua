@@ -176,7 +176,10 @@ if (Config.EnableTrackerTag) then
 	end)
 
 	RegisterServerEvent('bixbi_tracker:TaggerAdd')
-	AddEventHandler('bixbi_tracker:TaggerAdd', function(isNew, id, reason, time)
+	AddEventHandler('bixbi_tracker:TaggerAdd', function(source, isNew, id, reason, time)
+		local xPlayer = ESX.GetPlayerFromId(source)
+		if (xPlayer.job.name ~= 'police') then return end
+
 		if taggedPlayers[id] == nil and id ~= nil then
 			local xPlayer = ESX.GetPlayerFromId(id)
 			if xPlayer ~= nil then
@@ -210,45 +213,6 @@ if (Config.EnableTrackerTag) then
 		end
 	end)
 end
-
---[[--------------------------------------------------
-Vehicle Tag Code
-]]----------------------------------------------------
--- if (Config.EnableVehicleTracking) then
--- 	ESX.RegisterUsableItem('trackerveh', function(source)
--- 		TriggerClientEvent('bixbi_tracker:OpenVehTagMenu', source)
--- 	end)
-
--- 	local taggedVehicles = {}
--- 	RegisterServerEvent('bixbi_tracker:VehAdd')
--- 	AddEventHandler('bixbi_tracker:VehAdd', function(plate, group)
--- 		if taggedVehicles[plate] == nil and plate ~= nil then
--- 			taggedVehicles[plate] = {}
--- 			taggedVehicles[plate].group = group
-			
--- 			for i,player in ipairs(groupBlips[group].users) do
--- 				TriggerClientEvent('bixbi_core:Notify', player.playerId, 'info', Config.TrackerName .. _U('veh_tracked', plate))
--- 				TriggerClientEvent('bixbi_tracker:VehUpdateAll', player.playerId, taggedVehicles)
--- 			end
--- 		end
--- 	end)
-
--- 	RegisterServerEvent('bixbi_tracker:VehRemovePlate')
--- 	AddEventHandler('bixbi_tracker:VehRemovePlate', function(plate)
--- 		local vehTag = taggedVehicles[plate]
--- 		taggedVehicles[plate] = nil
-
--- 		local xPlayers = ESX.GetPlayers()
--- 		for i=1, #xPlayers, 1 do
--- 			local xPlayerA = ESX.GetPlayerFromId(xPlayers[i])
--- 			if Config.TagJobs[xPlayerA.job.name] ~= nil then
--- 				TriggerClientEvent('bixbi_core:Notify', xPlayerA.playerId, 'error', Config.TrackerName .. _U('veh_trackdel', plate))
--- 				TriggerClientEvent('bixbi_tracker:TagUpdateAll', xPlayers[i], taggedVehicles)
--- 			end
--- 		end
--- 	end)
--- end
-
 
 AddEventHandler("playerDropped", function()
 	if IsInGroup(source) then 

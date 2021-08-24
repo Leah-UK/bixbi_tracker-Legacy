@@ -22,3 +22,8 @@ server_scripts {
     '@mysql-async/lib/MySQL.lua',
     'server/server.lua'
 }
+
+dependencies {
+	'bixbi_core',
+	'nh-keyboard'
+}

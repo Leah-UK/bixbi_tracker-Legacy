@@ -8,7 +8,12 @@ end)
 
 AddEventHandler('onResourceStart', function(resourceName)
 	if (resourceName == GetCurrentResourceName() and Config.Debug) then
-		-- Citizen.Wait(1000)
+		while (ESX == nil) do
+            Citizen.Wait(100)
+        end
+        
+        Citizen.Wait(10000)
+        ESX.PlayerLoaded = true
 		StartScript()
 	end
 end)
@@ -117,6 +122,9 @@ function TrackerItemCheckLoop()
 		while ESX.PlayerLoaded do
 			if trackedGroup ~= nil then
 				local itemCount = exports['bixbi_core']:itemCount('tracker')
+				while (itemCount == nil) do
+					Citizen.Wait(100)
+				end
 				if itemCount == 0 then
 					TriggerServerEvent('bixbi_tracker:RemoveAtId', trackedGroup.name, GetPlayerServerId(PlayerId()))
 					trackedGroup = nil
@@ -360,7 +368,7 @@ AddEventHandler("bixbi_tracker:OpenTagMenu", function(source)
 		if data.current.value == 'add' then
 			AddNewTag()
 		elseif data.current.value == 'remove' then
-			TriggerEvent('bixbi_tracker:RemoveTagItem')
+			-- TriggerEvent('bixbi_tracker:RemoveTagItem')
 		end
 	end, function(data, menu)
 		menu.close()
@@ -370,50 +378,33 @@ end)
 function AddNewTag()
 	ESX.UI.Menu.CloseAll()
 
-	ESX.UI.Menu.Open(
-	'dialog', GetCurrentResourceName(), 'Tag-ID',
-	{
-	title = "User ID"
-	},
-	function(data5, menu5)
-		menu5.close()
-		local userid = data5.value
-
-		ESX.UI.Menu.Open(
-		'dialog', GetCurrentResourceName(), 'Tag-Reason',
-		{
-		title = "Reason for Tag"
-		},
-		function(data6, menu6)
-			menu6.close()
-			local reason = data6.value
-
-			ESX.UI.Menu.Open(
-			'dialog', GetCurrentResourceName(), 'Tag-Length',
-			{
-			title = "Length of Punishment (seconds)"
-			},
-			function(data7, menu7)
-				local length = data7.value
-				
-				exports['bixbi_core']:Loading(10000, 'Applying Tag')
-				exports['bixbi_core']:playAnim(PlayerPedId(), 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@', 'machinic_loop_mechandplayer', -1, false)
-				Citizen.Wait(10000)
-
-				TriggerServerEvent('bixbi_tracker:TaggerAdd', true, userid, reason, length)
-				ESX.UI.Menu.CloseAll()
-				
-			end, function(data7, menu7)
-				menu7.close()
-			end)
-			
-		end, function(data6, menu6)
-			menu6.close()
-		end)
-		
-	end, function(data5, menu5)
-		menu5.close()
-	end)
+	local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
+	if closestPlayer ~= -1 and closestDistance <= 3.0 then
+		local keyboard = exports["nh-keyboard"]:KeyboardInput({
+			header = "Add Tag", 
+			rows = {
+				{
+					id = 0, 
+					txt = "Reason"
+				},
+				{
+					id = 1, 
+					txt = "Length (minutes)"
+				}
+			}
+		})
+		if keyboard ~= nil then
+			if keyboard[1].input == nil or keyboard[2].input == nil then return end
+			if tonumber(keyboard[2].input == nil) then return end
+	
+			exports['bixbi_core']:Loading(10000, 'Applying Tag')
+			exports['bixbi_core']:playAnim(PlayerPedId(), 'anim@amb@clubhouse@tutorial@bkr_tut_ig3@', 'machinic_loop_mechandplayer', -1, false)
+			Citizen.Wait(10000)
+			ClearPedTasks(PlayerPedId())
+	
+			TriggerServerEvent('bixbi_tracker:TaggerAdd', GetPlayerServerId(PlayerId()), true, GetPlayerServerId(closestPlayer), keyboard[1].input, tonumber(keyboard[2].input) * 1000)
+		end
+	end
 end
 
 -- function RemoveTag()
@@ -431,37 +422,5 @@ end
 -- 		ESX.UI.Menu.CloseAll()
 -- 	end, function(data2, menu2)
 -- 		menu2.close()
--- 	end)
--- end
-
---[[--------------------------------------------------
-Vehicle Tag Code
-]]----------------------------------------------------
--- local taggedVehicles = nil
--- RegisterNetEvent('bixbi_tracker:CheckVehTags')
--- AddEventHandler("bixbi_tracker:CheckVehTags", function()
--- 	if (Config.EnableVehicleTracking) then
--- 		local playerId = GetPlayerServerId(PlayerId())
--- 		TriggerServerEvent('bixbi_tracker:TagVehForceUpdate', playerId)
--- 	end
--- end)
-
--- RegisterNetEvent('bixbi_tracker:VehUpdateAll')
--- AddEventHandler("bixbi_tracker:VehUpdateAll", function(vehs)
--- 	taggedVehicles = vehs
--- end)
-
--- if Config.EnableVehicleTracking then
--- 	Citizen.CreateThread(function()
--- 		while true do
--- 			if taggedVehicles ~= nil then
--- 				for i, vehicle in ipairs(taggedVehicles) do
--- 					if (trackedGroup.name == vehicle.group) then
-						
--- 					end
--- 				end
--- 			end
--- 			Wait(Config.BlipCheckTime * 1000)
--- 		end
 -- 	end)
 -- end
