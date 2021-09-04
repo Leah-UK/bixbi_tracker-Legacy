@@ -3,6 +3,8 @@
 
 ---
 
+<h2 align='center'>Information - OneSync Legacy</h2>
+
 The ultimate purpose of the tracker is to connect groups of players together. Be it criminal, government or otherwise. Using the item the player is able to join, create or delete their group.
 
 Group names can be reserved for jobs, for e.g. there may be a gang on your server called Lost MC. Using the config you can set this as a “reserved” gang, meaning that these gang members (based on their ESX Job) can only join one group - lostmc, and also means that people who are not part of the job are unable to join. Furthermore, using the config you can set “parent” group names. This is useful for the emergency services, for example having the Police and the Ambulance (medics) assigned to the parent “emergency”.
@@ -22,7 +24,7 @@ Using the tracker tag you’re able to punish criminals in a different way than 
 - ESX v1 Final, ESX v1.2 or ESX Legacy  
 <i> Can be easily modified for other frameworks</i>
 - <a href='https://github.com/Leah-UK/bixbi_core'>bixbi_core</a>
-- OneSync <b>Legacy</b>
+- OneSync <b>Legacy</b>. Infinity Version <a href='https://github.com/Leah-UK/bixbi_tracker'>Here</a>
 - <a href='https://github.com/nerohiro/nh-keyboard'>NH-Keyboard</a>
 
 ---
