@@ -100,7 +100,7 @@ function TrackerBlipLoop()
 					local player = GetPlayerFromServerId(user.playerId)
 					local ped = GetPlayerPed(player)
 	
-					if GetPlayerPed(-1) ~= ped and GetBlipFromEntity(ped) == 0 then
+					if PlayerPedId() ~= ped and GetBlipFromEntity(ped) == 0 then
 						local blip = AddBlipForEntity(ped)
 						SetBlipSprite(blip, 1)
 						SetBlipColour(blip, user.colour)
@@ -230,7 +230,7 @@ function TrackerTagBlipLoop()
 						local player = GetPlayerFromServerId(user.id)
 						local ped = GetPlayerPed(player)
 	
-						if GetPlayerPed(-1) ~= ped and GetBlipFromEntity(ped) == 0 then
+						if PlayerPedId() ~= ped and GetBlipFromEntity(ped) == 0 then
 							local blip = AddBlipForEntity(ped)
 							SetBlipSprite(blip, 188)
 							SetBlipColour(blip, 3)
